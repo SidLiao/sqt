@@ -19,8 +19,13 @@
     --palette-base4: #616569;
     --palette-base5: #eff0f1;
     --palette-secondary0: #345e75;
-    --palette-secondary1: #3daee9;
-
+    --palette-secondary1: #3dae99;
+    --palette-secondary2: #3da000;
+    --palette-secondary3: #faa777;
+    --palette-secondary4: #fdaee9;
+    --palette-secondary5: #effff9;
+    --palette-secondary6: #fbb800;
+    --palette-secondary7: #f00000;
     --grid-background: #1143c4;
 }
 
@@ -66,7 +71,20 @@ header h1
     padding-top: 10px;
     margin: 0;
 }
-
+.props{
+    width: 100%;
+    height: 5%;
+    /* background-color: red; */
+    text-align: center;
+    margin-top: 20%;
+}
+.xprops{
+    width: 100%;
+    height: 5%;
+    /* background-color: red; */
+    text-align: center;
+    margin-top: 20%;
+}
 aside
 {
     background: var(--palette-base1);
@@ -76,7 +94,35 @@ aside
     top: var(--header-height);
     width: var(--sidebar-width);
 }
-
+.aside-grid{
+   width: 60%;
+   height: 20%;
+   margin: 0 auto;
+   background-color: #345E75;
+}
+.aside-grid > div{
+    display: flex;
+    float: left;
+    /* border: 1px solid #31363B; */
+    width: 25%;
+    height: 25%;
+    background-color: #232629;
+}
+.xaside-grid{
+    width: 60%;
+    height: 20%;
+    margin: 0 auto;
+    margin-top: 0px;
+    background-color: #345E75;
+ }
+.xaside-grid > div{
+     display: flex;
+     float: left;
+     /* border: 1px solid #31363B; */
+     width: 25%;
+     height: 25%;
+     background-color: #232629;
+}
 main
 {
     background: var(--palette-base2);
@@ -143,32 +189,32 @@ footer
 
 .cell.J
 {
-    background-color: var(--palette-secondary1);
+    background-color: var(--palette-secondary2);
 }
 
 .cell.L
 {
-    background-color: var(--palette-secondary1);
+    background-color: var(--palette-secondary3);
 }
 
 .cell.O
 {
-    background-color: var(--palette-secondary1);
+    background-color: var(--palette-secondary4);
 }
 
 .cell.S
 {
-    background-color: var(--palette-secondary1);
+    background-color: var(--palette-secondary5);
 }
 
 .cell.T
 {
-    background-color: var(--palette-secondary1);
+    background-color: var(--palette-secondary6);
 }
 
 .cell.Z
 {
-    background-color: var(--palette-secondary1);
+    background-color: var(--palette-secondary7);
 }
 
 .cell.current
