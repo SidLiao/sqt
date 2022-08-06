@@ -297,15 +297,18 @@ const new_score = () => 0;
 Tetris.new_game = function () {
     const [current_tetromino, next_bag] = new_bag();
     const [next_tetromino, bag] = next_bag();
-
+    let held_tetromino = [[]];
+    let can_hold = false;
     return {
         "bag": bag,
         "current_tetromino": current_tetromino,
-        "field": new_field(),
+        "field": new_field(),  //初始化棋盘
         "game_over": false,
-        "next_tetromino": next_tetromino,
+        "next_tetromino": next_tetromino, //下一步棋子
         "position": starting_position,
-        "score": new_score()
+        "score": new_score(),
+        "held_tetromino": held_tetromino,
+        "can_hold": can_hold
     };
 };
 
@@ -480,7 +483,9 @@ Tetris.rotate_ccw = function (game) {
 };
 
 const drop_once = function (game) {
+    //新的一步
     const new_position = [game.position[0], game.position[1] + 1];
+    //判断是否越界
     if (is_blocked(game.field, game.current_tetromino, new_position)) {
         return game;
     }
@@ -523,6 +528,50 @@ Tetris.hard_drop = function (game) {
     }
     return Tetris.hard_drop(dropped_once);
 };
+const deepCopy = (obj) => {
+    //浅拷贝子节点
+    let handleChild = (child) => {
+        if(typeof child === 'object'){
+            if(Array.isArray(child)){ // 数组
+            return [...child]
+            }else if(child){ // 对象
+            return {...child}
+            }else{ // null
+            return child
+            }
+        }else{ // 值类型
+            return child
+        }
+    }
+    let arr = [];
+    let target = {result: obj};
+    let current = target; 
+    while(current){
+    if(typeof current === 'object'){
+        if(Array.isArray(current)){ //数组
+        current.forEach((item, index) => {
+            let child = handleChild(item)
+            current[index] = child;
+            arr.push(child);
+        })
+        }else if(current){ //对象
+        let objKeys = Object.keys(current);
+        objKeys.forEach(key => {
+            let child = handleChild(current[key]);
+            current[key] = child;
+            arr.push(child);
+        })
+        }else{ //null
+        temp = current;
+        }
+    }
+    current = arr.shift()
+    }
+    return target.result
+}
+Tetris.hold = function(game){
+    return deepCopy(game.current_tetromino);
+}
 
 const lose = R.set(R.lensProp("game_over"), true);
 
@@ -564,15 +613,17 @@ const clear_lines = R.pipe(
  * @returns {Tetris.Game}
  */
 Tetris.next_turn = function (game) {
+    //判断游戏是否结束
     if (game.game_over) {
         return game;
     }
-
+    //更新下一个步骤
     const dropped_once = drop_once(game);
+    //如果下一个步骤和当前步骤重合了，那么就直接结束了。
     if (!R.equals(game, dropped_once)) {
         return dropped_once;
     }
-
+    //直接结束
     if (is_blocked_by_geometry(
         game.field,
         game.current_tetromino,
@@ -594,7 +645,9 @@ Tetris.next_turn = function (game) {
         "game_over": false,
         "next_tetromino": next_tetromino,
         "position": starting_position,
-        "score": game.score
+        "score": game.score,
+        "held_tetromino": game.held_tetromino,
+        "can_hold": game.can_hold
     };
 };
 
