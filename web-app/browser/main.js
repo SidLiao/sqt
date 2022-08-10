@@ -7,12 +7,11 @@ let game = Tetris.new_game();
 document.documentElement.style.setProperty("--grid-rows", grid_rows);
 document.documentElement.style.setProperty("--grid-columns", grid_columns);
 const grid = document.getElementById("grid");
-const range = (n) => Array.from({"length": n}, (ignore, k) => k);
+const range = (n) => Array.from({ "length": n }, (ignore, k) => k);
 //画出棋盘
 const cells = range(grid_rows).map(function () {
     const row = document.createElement("div");
     row.className = "row";
-
     const rows = range(grid_columns).map(function () {
         const cell = document.createElement("div");
         cell.className = "cell";
@@ -25,78 +24,43 @@ const cells = range(grid_rows).map(function () {
     grid.append(row);
     return rows;
 });
-function clearLeftColor(){
+function clearLeftColor() {
     let i;
-    for(i=1;i<=16;i++){
-        let idstr="aside-grid"+i;
-        document.getElementById(idstr).style.backgroundColor="#2D3136";
-        document.getElementById(idstr).style.border="0px";
-    }
+    range(16).map(e => {
+        let idstr = "aside-grid" + (e + 1);
+        document.getElementById(idstr).style.backgroundColor = "#2D3136";
+        document.getElementById(idstr).style.border = "0px";
+    })
 }
-function colorLeft(){
-    if(game.next_tetromino.block_type === "L"){
-        document.getElementById("aside-grid2").style.backgroundColor="#faa777";
-        document.getElementById("aside-grid2").style.border="1px solid #31363B";
-        document.getElementById("aside-grid6").style.backgroundColor="#faa777";
-        document.getElementById("aside-grid6").style.border="1px solid #31363B";
-        document.getElementById("aside-grid10").style.backgroundColor="#faa777";
-        document.getElementById("aside-grid10").style.border="1px solid #31363B";
-        document.getElementById("aside-grid11").style.backgroundColor="#faa777";
-        document.getElementById("aside-grid11").style.border="1px solid #31363B";
-    }else if(game.next_tetromino.block_type === "Z"){
-        document.getElementById("aside-grid6").style.backgroundColor="#f00000";
-        document.getElementById("aside-grid6").style.border="1px solid #31363B";
-        document.getElementById("aside-grid7").style.backgroundColor="#f00000";
-        document.getElementById("aside-grid7").style.border="1px solid #31363B";
-        document.getElementById("aside-grid11").style.backgroundColor="#f00000";
-        document.getElementById("aside-grid11").style.border="1px solid #31363B";
-        document.getElementById("aside-grid12").style.backgroundColor="#f00000";
-        document.getElementById("aside-grid12").style.border="1px solid #31363B";
-    }else if(game.next_tetromino.block_type === "T"){
-        document.getElementById("aside-grid6").style.backgroundColor="#fbb800";
-        document.getElementById("aside-grid6").style.border="1px solid #31363B";
-        document.getElementById("aside-grid7").style.backgroundColor="#fbb800";
-        document.getElementById("aside-grid7").style.border="1px solid #31363B";
-        document.getElementById("aside-grid8").style.backgroundColor="#fbb800";
-        document.getElementById("aside-grid8").style.border="1px solid #31363B";
-        document.getElementById("aside-grid11").style.backgroundColor="#fbb800";
-        document.getElementById("aside-grid11").style.border="1px solid #31363B";
-    }else if(game.next_tetromino.block_type === "I"){
-        document.getElementById("aside-grid5").style.backgroundColor="#3dae99";
-        document.getElementById("aside-grid5").style.border="1px solid #31363B";
-        document.getElementById("aside-grid6").style.backgroundColor="#3dae99";
-        document.getElementById("aside-grid6").style.border="1px solid #31363B";
-        document.getElementById("aside-grid7").style.backgroundColor="#3dae99";
-        document.getElementById("aside-grid7").style.border="1px solid #31363B";
-        document.getElementById("aside-grid8").style.backgroundColor="#3dae99";
-        document.getElementById("aside-grid8").style.border="1px solid #31363B";
-    }else if(game.next_tetromino.block_type === "J"){
-        document.getElementById("aside-grid5").style.backgroundColor="#3da000";
-        document.getElementById("aside-grid5").style.border="1px solid #31363B";
-        document.getElementById("aside-grid6").style.backgroundColor="#3da000";
-        document.getElementById("aside-grid6").style.border="1px solid #31363B";
-        document.getElementById("aside-grid7").style.backgroundColor="#3da000";
-        document.getElementById("aside-grid7").style.border="1px solid #31363B";
-        document.getElementById("aside-grid11").style.backgroundColor="#3da000";
-        document.getElementById("aside-grid11").style.border="1px solid #31363B";
-    }else if(game.next_tetromino.block_type === "O"){
-        document.getElementById("aside-grid6").style.backgroundColor="#fdaee9";
-        document.getElementById("aside-grid6").style.border="1px solid #31363B";
-        document.getElementById("aside-grid7").style.backgroundColor="#fdaee9";
-        document.getElementById("aside-grid7").style.border="1px solid #31363B";
-        document.getElementById("aside-grid10").style.backgroundColor="#fdaee9";
-        document.getElementById("aside-grid10").style.border="1px solid #31363B";
-        document.getElementById("aside-grid11").style.backgroundColor="#fdaee9";
-        document.getElementById("aside-grid11").style.border="1px solid #31363B";
-    }else if(game.next_tetromino.block_type === "S"){
-        document.getElementById("aside-grid7").style.backgroundColor="#effff9";
-        document.getElementById("aside-grid7").style.border="1px solid #31363B";
-        document.getElementById("aside-grid8").style.backgroundColor="#effff9";
-        document.getElementById("aside-grid8").style.border="1px solid #31363B";
-        document.getElementById("aside-grid10").style.backgroundColor="#effff9";
-        document.getElementById("aside-grid10").style.border="1px solid #31363B";
-        document.getElementById("aside-grid11").style.backgroundColor="#effff9";
-        document.getElementById("aside-grid11").style.border="1px solid #31363B";
+function colorLeft() {
+    if (game.next_tetromino.block_type === "L") {
+        [2, 6, 10, 11].map(e => {
+            setColor('aside-grid' + e)
+        })
+    } else if (game.next_tetromino.block_type === "Z") {
+        [6, 7, 11, 12].map(e => {
+            setColor('aside-grid' + e)
+        })
+    } else if (game.next_tetromino.block_type === "T") {
+        [6, 7, 8, 11].map(e => {
+            setColor('aside-grid' + e)
+        })
+    } else if (game.next_tetromino.block_type === "I") {
+        [5, 6, 7, 8].map(e => {
+            setColor('aside-grid' + e)
+        })
+    } else if (game.next_tetromino.block_type === "J") {
+        [5, 6, 7, 11].map(e => {
+            setColor('aside-grid' + e)
+        })
+    } else if (game.next_tetromino.block_type === "O") {
+        [6, 7, 10, 11].map(e => {
+            setColor('aside-grid' + e)
+        })
+    } else if (game.next_tetromino.block_type === "S") {
+        [7, 8, 10, 11].map(e => {
+            setColor('aside-grid' + e)
+        })
     }
 }
 const update_grid = function () {
@@ -109,7 +73,6 @@ const update_grid = function () {
             cell.className = `cell ${block}`;
         });
     });
-
     Tetris.tetromino_coordiates(game.current_tetromino, game.position).forEach(
         function (coord) {
             try {
@@ -124,145 +87,62 @@ const update_grid = function () {
     );
 };
 
-function xclearLeftColor(){
+function xclearLeftColor() {
     let i;
-    for(i=1;i<=16;i++){
-        let idstr="xaside-grid"+i;
-        document.getElementById(idstr).style.backgroundColor="#2D3136";
-        document.getElementById(idstr).style.border="0px";
+    for (i = 1; i <= 16; i++) {
+        let idstr = "xaside-grid" + i;
+        document.getElementById(idstr).style.backgroundColor = "#2D3136";
+        document.getElementById(idstr).style.border = "0px";
     }
 }
-function xcolorLeft(){
-    if(game.held_tetromino.block_type === "L"){
-        document.getElementById("xaside-grid2").style.backgroundColor="#faa777";
-        document.getElementById("xaside-grid2").style.border="1px solid #31363B";
-        document.getElementById("xaside-grid6").style.backgroundColor="#faa777";
-        document.getElementById("xaside-grid6").style.border="1px solid #31363B";
-        document.getElementById("xaside-grid10").style.backgroundColor="#faa777";
-        document.getElementById("xaside-grid10").style.border="1px solid #31363B";
-        document.getElementById("xaside-grid11").style.backgroundColor="#faa777";
-        document.getElementById("xaside-grid11").style.border="1px solid #31363B";
-    }else if(game.held_tetromino.block_type === "Z"){
-        document.getElementById("xaside-grid6").style.backgroundColor="#f00000";
-        document.getElementById("xaside-grid6").style.border="1px solid #31363B";
-        document.getElementById("xaside-grid7").style.backgroundColor="#f00000";
-        document.getElementById("xaside-grid7").style.border="1px solid #31363B";
-        document.getElementById("xaside-grid11").style.backgroundColor="#f00000";
-        document.getElementById("xaside-grid11").style.border="1px solid #31363B";
-        document.getElementById("xaside-grid12").style.backgroundColor="#f00000";
-        document.getElementById("xaside-grid12").style.border="1px solid #31363B";
-    }else if(game.held_tetromino.block_type === "T"){
-        document.getElementById("xaside-grid6").style.backgroundColor="#fbb800";
-        document.getElementById("xaside-grid6").style.border="1px solid #31363B";
-        document.getElementById("xaside-grid7").style.backgroundColor="#fbb800";
-        document.getElementById("xaside-grid7").style.border="1px solid #31363B";
-        document.getElementById("xaside-grid8").style.backgroundColor="#fbb800";
-        document.getElementById("xaside-grid8").style.border="1px solid #31363B";
-        document.getElementById("xaside-grid11").style.backgroundColor="#fbb800";
-        document.getElementById("xaside-grid11").style.border="1px solid #31363B";
-    }else if(game.held_tetromino.block_type === "I"){
-        document.getElementById("xaside-grid5").style.backgroundColor="#3dae99";
-        document.getElementById("xaside-grid5").style.border="1px solid #31363B";
-        document.getElementById("xaside-grid6").style.backgroundColor="#3dae99";
-        document.getElementById("xaside-grid6").style.border="1px solid #31363B";
-        document.getElementById("xaside-grid7").style.backgroundColor="#3dae99";
-        document.getElementById("xaside-grid7").style.border="1px solid #31363B";
-        document.getElementById("xaside-grid8").style.backgroundColor="#3dae99";
-        document.getElementById("xaside-grid8").style.border="1px solid #31363B";
-    }else if(game.held_tetromino.block_type === "J"){
-        document.getElementById("xaside-grid5").style.backgroundColor="#3da000";
-        document.getElementById("xaside-grid5").style.border="1px solid #31363B";
-        document.getElementById("xaside-grid6").style.backgroundColor="#3da000";
-        document.getElementById("xaside-grid6").style.border="1px solid #31363B";
-        document.getElementById("xaside-grid7").style.backgroundColor="#3da000";
-        document.getElementById("xaside-grid7").style.border="1px solid #31363B";
-        document.getElementById("xaside-grid11").style.backgroundColor="#3da000";
-        document.getElementById("xaside-grid11").style.border="1px solid #31363B";
-    }else if(game.held_tetromino.block_type === "O"){
-        document.getElementById("xaside-grid6").style.backgroundColor="#fdaee9";
-        document.getElementById("xaside-grid6").style.border="1px solid #31363B";
-        document.getElementById("xaside-grid7").style.backgroundColor="#fdaee9";
-        document.getElementById("xaside-grid7").style.border="1px solid #31363B";
-        document.getElementById("xaside-grid10").style.backgroundColor="#fdaee9";
-        document.getElementById("xaside-grid10").style.border="1px solid #31363B";
-        document.getElementById("xaside-grid11").style.backgroundColor="#fdaee9";
-        document.getElementById("xaside-grid11").style.border="1px solid #31363B";
-    }else if(game.held_tetromino.block_type === "S"){
-        document.getElementById("xaside-grid7").style.backgroundColor="#effff9";
-        document.getElementById("xaside-grid7").style.border="1px solid #31363B";
-        document.getElementById("xaside-grid8").style.backgroundColor="#effff9";
-        document.getElementById("xaside-grid8").style.border="1px solid #31363B";
-        document.getElementById("xaside-grid10").style.backgroundColor="#effff9";
-        document.getElementById("xaside-grid10").style.border="1px solid #31363B";
-        document.getElementById("xaside-grid11").style.backgroundColor="#effff9";
-        document.getElementById("xaside-grid11").style.border="1px solid #31363B";
-    }
+function setColor(domStr) {
+    document.getElementById(domStr).style.backgroundColor = "#faa777";
+    document.getElementById(domStr).style.border = "1px solid #31363B";
 }
-
-const deepCopy = (obj) => {
-    //浅拷贝子节点
-    let handleChild = (child) => {
-        if(typeof child === 'object'){
-            if(Array.isArray(child)){ // 数组
-            return [...child]
-            }else if(child){ // 对象
-            return {...child}
-            }else{ // null
-            return child
-            }
-        }else{ // 值类型
-            return child
-        }
-    }
-    let arr = [];
-    let target = {result: obj};
-    let current = target; 
-    while(current){
-    if(typeof current === 'object'){
-        if(Array.isArray(current)){ //数组
-        current.forEach((item, index) => {
-            let child = handleChild(item)
-            current[index] = child;
-            arr.push(child);
+function xcolorLeft() {
+    if (game.held_tetromino.block_type === "L") {
+        ['xaside-grid6', 'xaside-grid10', 'xaside-grid611'].map(e => {
+            setColor(e)
         })
-        }else if(current){ //对象
-        let objKeys = Object.keys(current);
-        objKeys.forEach(key => {
-            let child = handleChild(current[key]);
-            current[key] = child;
-            arr.push(child);
+    } else if (game.held_tetromino.block_type === "Z") {
+        [6, 7, 11, 12].map(e => {
+            setColor('xaside-grid' + e)
         })
-        }else{ //null
-        temp = current;
-        }
+    } else if (game.held_tetromino.block_type === "T") {
+        [6, 7, 8, 11].map(e => {
+            setColor('xaside-grid' + e)
+        })
+    } else if (game.held_tetromino.block_type === "I") {
+        [5, 6, 7, 8].map(e => {
+            setColor('xaside-grid' + e)
+        })
+    } else if (game.held_tetromino.block_type === "J") {
+        [5, 6, 7, 11].map(e => {
+            setColor('xaside-grid' + e)
+        })
+    } else if (game.held_tetromino.block_type === "O") {
+        [6, 7, 10, 11].map(e => {
+            setColor('xaside-grid' + e)
+        })
+    } else if (game.held_tetromino.block_type === "S") {
+        [7, 8, 10, 11].map(e => {
+            setColor('xaside-grid' + e)
+        })
     }
-    current = arr.shift()
-    }
-    return target.result
 }
-// Don't allow the player to hold down the rotate key.
+var deepCopy = (obj) => JSON.parse(JSON.stringify(obj))
 let key_locked = false;
-
 document.body.onkeyup = function () {
     key_locked = false;
 };
 // let can_hold=false;
-document.onkeydown=function(event){
+document.onkeydown = function (event) {
     var e = event || window.event || arguments.callee.caller.arguments[0];
-    if(e && e.keyCode==67){ // 按 c
-        if(game.can_hold==false){
-            game.can_hold=true;
-            game.held_tetromino=Tetris.hold(game);
-            game.current_tetromino=deepCopy(game.next_tetromino);
-        }else{
-            // game.can_hold=false;
-            let t=Tetris.hold(game);
-            game.current_tetromino=deepCopy(game.held_tetromino);
-            game.held_tetromino=t;
-        }
+    if (e && e.keyCode == 67) { // 按 c
+        game = Tetris.hold(game)
         xclearLeftColor();
         xcolorLeft();
-      }
+    }
 };
 
 document.body.onkeydown = function (event) {
