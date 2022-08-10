@@ -297,7 +297,7 @@ const new_score = () => 0;
 Tetris.new_game = function () {
     const [current_tetromino, next_bag] = new_bag();
     const [next_tetromino, bag] = next_bag();
-    let held_tetromino = [[]];
+    let held_tetromino = null;
     let can_hold = false;
     return {
         "bag": bag,
@@ -394,7 +394,7 @@ Tetris.left = function (game) {
     if (is_blocked(game.field, game.current_tetromino, new_position)) {
         return game;
     }
-    return R.mergeRight(game, {"position": new_position});
+    return R.mergeRight(game, { "position": new_position });
 };
 
 /**
@@ -414,7 +414,7 @@ Tetris.right = function (game) {
     if (is_blocked(game.field, game.current_tetromino, new_position)) {
         return game;
     }
-    return R.mergeRight(game, {"position": new_position});
+    return R.mergeRight(game, { "position": new_position });
 };
 
 const rotate_grid_cw = R.pipe(R.reverse, R.transpose);
@@ -459,7 +459,7 @@ Tetris.rotate_cw = function (game) {
     if (is_blocked(game.field, new_rotation, game.position)) {
         return game;
     }
-    return R.mergeRight(game, {"current_tetromino": new_rotation});
+    return R.mergeRight(game, { "current_tetromino": new_rotation });
 };
 
 /**
@@ -479,7 +479,7 @@ Tetris.rotate_ccw = function (game) {
     if (is_blocked(game.field, new_rotation, game.position)) {
         return game;
     }
-    return R.mergeRight(game, {"current_tetromino": new_rotation});
+    return R.mergeRight(game, { "current_tetromino": new_rotation });
 };
 
 const drop_once = function (game) {
@@ -489,7 +489,7 @@ const drop_once = function (game) {
     if (is_blocked(game.field, game.current_tetromino, new_position)) {
         return game;
     }
-    return R.mergeRight(game, {"position": new_position});
+    return R.mergeRight(game, { "position": new_position });
 };
 
 /**
@@ -529,48 +529,27 @@ Tetris.hard_drop = function (game) {
     return Tetris.hard_drop(dropped_once);
 };
 const deepCopy = (obj) => {
-    //浅拷贝子节点
-    let handleChild = (child) => {
-        if(typeof child === 'object'){
-            if(Array.isArray(child)){ // 数组
-            return [...child]
-            }else if(child){ // 对象
-            return {...child}
-            }else{ // null
-            return child
-            }
-        }else{ // 值类型
-            return child
-        }
-    }
-    let arr = [];
-    let target = {result: obj};
-    let current = target; 
-    while(current){
-    if(typeof current === 'object'){
-        if(Array.isArray(current)){ //数组
-        current.forEach((item, index) => {
-            let child = handleChild(item)
-            current[index] = child;
-            arr.push(child);
-        })
-        }else if(current){ //对象
-        let objKeys = Object.keys(current);
-        objKeys.forEach(key => {
-            let child = handleChild(current[key]);
-            current[key] = child;
-            arr.push(child);
-        })
-        }else{ //null
-        temp = current;
-        }
-    }
-    current = arr.shift()
-    }
-    return target.result
+    console.log(obj)
+    return JSON.parse(JSON.stringify(obj))
 }
-Tetris.hold = function(game){
-    return deepCopy(game.current_tetromino);
+Tetris.hold = function (game) {
+    game = R.clone(game)
+    if (!game.can_hold) {
+        if (game.held_tetromino) {
+            let temp = deepCopy(game.current_tetromino);
+            game.current_tetromino = game.held_tetromino;
+            game.held_tetromino = temp;
+        } else {
+            game.held_tetromino = deepCopy(game.current_tetromino)
+            const [next_tetromino, bag] = game.bag();
+            game.current_tetromino = deepCopy(game.next_tetromino);
+            game.next_tetromino = next_tetromino;
+            game.bag = bag;
+        }
+        game.can_hold = true;
+        game.position = [5,1]
+    }
+    return game;
 }
 
 const lose = R.set(R.lensProp("game_over"), true);
@@ -637,7 +616,7 @@ Tetris.next_turn = function (game) {
     const cleared_field = clear_lines(locked_field);
 
     const [next_tetromino, bag] = game.bag();
-
+    game.can_hold = false
     return {
         "bag": bag,
         "current_tetromino": game.next_tetromino,
