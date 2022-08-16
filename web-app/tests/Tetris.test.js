@@ -60,17 +60,3 @@ describe("Hold", function () {
         }
     );
 });
-
-    it(
-        `### Change this to your test description ###`,
-        function () {
-            const init_game = Tetris.new_game();
-            const initial_piece = Tetris.hold(init_game);
-            if(initial_piece == undefined || initial_piece == null){
-                throw new Error(
-                    ` the *next tetromino* is deployed failed.`
-                );
-            }
-        }
-    );
-});
