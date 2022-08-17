@@ -298,7 +298,7 @@ Tetris.new_game = function () {
     const [current_tetromino, next_bag] = new_bag();
     const [next_tetromino, bag] = next_bag();
     let held_tetromino = null;
-    let can_hold = false;
+    let can_hold = true;
     return {
         "bag": bag,
         "current_tetromino": current_tetromino,
@@ -534,7 +534,7 @@ const deepCopy = (obj) => {
 }
 Tetris.hold = function (game) {
     game = R.clone(game)
-    if (!game.can_hold) {
+    if (game.can_hold) {
         if (game.held_tetromino) {
             let temp = deepCopy(game.current_tetromino);
             game.current_tetromino = game.held_tetromino;
@@ -546,7 +546,7 @@ Tetris.hold = function (game) {
             game.next_tetromino = next_tetromino;
             game.bag = bag;
         }
-        game.can_hold = true;
+        game.can_hold = false;
         game.position = [5,1]
     }
     return game;
@@ -616,7 +616,7 @@ Tetris.next_turn = function (game) {
     const cleared_field = clear_lines(locked_field);
 
     const [next_tetromino, bag] = game.bag();
-    game.can_hold = false
+    game.can_hold = true
     return {
         "bag": bag,
         "current_tetromino": game.next_tetromino,
